@@ -10,11 +10,11 @@ class Middleware {
             let auth = firebase.auth();
             auth.createUserWithEmailAndPassword(docDetails.email, docDetails.pass)
                 .then((user) => {
+                    props.navigation.navigate('login')
                     uid = user.uid;
                     docDetails._id = uid;
                     firebase.database().ref(`Users/${uid}`).set(docDetails);
                     dispatch(Actions.SignupAction())
-                    // props.navigation.navigate('login')
                 })
                 .catch(function (error) {
                     var errorCode = error.code;
@@ -28,7 +28,7 @@ class Middleware {
             auth.signInWithEmailAndPassword(docDetails.email, docDetails.pass)
                 .then(async(user) => {
                     alert('Successfully Login!')
-                    props.navigation.navigate('tabnavigation')
+                    props.navigation.navigate('MapVeiw')
                     await AsyncStorage.removeItem('xyz');
                     let currentUser = { email: docDetails.email, pass: docDetails.pass, _id: user.uid };
                     await AsyncStorage.setItem('xyz', JSON.stringify(currentUser));
@@ -41,14 +41,6 @@ class Middleware {
             console.log(docDetails, 'asdasd')
 
             dispatch(Actions.LoginAction())
-        }
-    }
-    static createPatient(patient) {
-        return (dispatch) => {
-            
-            let docId = patient.docID
-            firebase.database().ref(`Patients/${docId}`).push(patient);
-            console.log(patient);
         }
     }
 }

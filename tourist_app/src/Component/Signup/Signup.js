@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import { Container, Content, Form, Item, Input, Label, Icon, Footer } from 'native-base';
+import { Container, Content, Form, Item, Input, Button, Label, Icon, Footer } from 'native-base';
 import { View, Text, AsyncStorage, Image, StyleSheet, TextInput } from "react-native"
-import Button from '../../Tags/Button';
-import Header from '../../Tags/Header';
+// import Button from '../../Tags/Button';
+// import Header from '../../Tags/Header';
 // import Inputrr from '../../Tags/Input';
-import Spinner from '../../Tags/Spinner';
+// import Spinner from '../../Tags/Spinner';
 import { connect } from 'react-redux';
 import Middleware from '../../Store/Middleware/Middleware';
 
 
 function mapDispatchToProps(dispatch) {
     return {
-        signupUser: (users) =>  dispatch(Middleware.signupUser(users))
-        
+        signupUser: (users) => dispatch(Middleware.signupUser(users))
+
     }
 }
 function mapStateToProps(state) {
     return {
 
-        signup: state.Signup.signup,
+        signup: state.Patients.Signup,
     }
 }
 
@@ -61,7 +61,7 @@ class Signup extends Component {
 
     render() {
         return (
-            <Image source={require('../../Images/1.jpg')} style={styles.bgImage}>
+            <Image source={require('../../Images/2.png')} style={styles.bgImage}>
                 <Container style={styles.container}>
                     <Content style={{ width: 240, marginTop: 100 }} >
                         <TextInput
@@ -96,13 +96,13 @@ class Signup extends Component {
                             underlineColorAndroid='#fff'
                             secureTextEntry={true}
                         />
-                        <Button block rounded style={{ marginTop: 20, backgroundColor: 'rgba(255,255,255, 0.3 )', padding: 10, width: 240 }} onPress={this.SignupUser}>
+                        <Button block rounded style={{ marginTop: 20,backgroundColor: '#2C3745', padding: 10, width: 240 }} onPress={this.SignupUser}>
                             <Text style={{ color: '#fff', }} >Sign up</Text>
                         </Button>
                         {
-                            (this.props.signup) ?
-                                this.props.signup.map((user, i) => {
-                                    console.log(user.fname)
+                            (this.props.Signup) ?
+                                this.props.Signup.map((user, i) => {
+                                    console.log(user.fullname)
                                     return (<View key={i}>
                                         <Text style={{ color: '#fff' }}>{user.fullname}</Text>
                                         {/* {keys.users.map((p, i) => {
@@ -120,12 +120,11 @@ class Signup extends Component {
                         }
                         <Text style={{ color: '#fff', fontSize: 12, textAlign: 'center', marginTop: 10 }}> Forgot your login details?<Text style={{ fontWeight: 'bold', }}> Get login help.</Text> </Text>
                     </Content>
-                    <Footer style={{ height: 100 }}>
-                        <Button block rounded style={{ backgroundColor: 'rgba(45,92,227, 0.7 )', padding: 10, width: 240 }} onPress={() => { this.props.navigation.navigate('login') }}>
-                            <Text style={{ color: '#fff', }} >Already have account </Text>
+                    <Footer style={{ backgroundColor: '#2C3745', height: 40, marginBottom: 10 }}>
+                        <Button bordered style={{ padding: 10, width: 240 }} onPress={() => { this.props.navigation.navigate('login') }}>
+                            <Text style={{ marginLeft: 50,marginBottom:5, color: 'white', }} >Already have account </Text>
                         </Button>
                     </Footer>
-
                 </Container>
             </Image>
         )

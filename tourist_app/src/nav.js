@@ -2,7 +2,7 @@ import { StackNavigator, TabNavigator } from "react-navigation";
 import Login from "./Component/Login/Login";
 import Signup from "./Component/Signup/Signup";
 // import HomePage from "./Components/HomePage/homePage";
-// import RegistrationForm from "./Component/Registrationform/RegistrationForm";
+import MapVeiw from "./Component/MapVeiw/MapVeiw";
 // import PatientList from "./Component/PatientList/PatientList";
 // import TabNavigation from "./Component/TabNavigation/TabNavigation";
 // import Profile from './Components/Profile/profile';
@@ -14,7 +14,7 @@ const Naviagte = StackNavigator({
     // patientList: { screen: PatientList },   
     // tabnavigation: { screen: TabNavigation },
     // tabsnav: { screen: TabsNav },
-    // registrationFrom: { screen: RegistrationForm },
+    MapVeiw: { screen: MapVeiw },
     // homePage: { screen: HomePage },
     signup: { screen: Signup },
 })
