@@ -9,7 +9,7 @@ import mapView from "./Component/MapView/mapView";
 // import TabsNav from './Components/TabsNav/tabsNav';
 
 const Naviagte = StackNavigator({
-    login: { screen: Login },
+    // login: { screen: Login },
     // profile: {screen: Profile},
     // patientList: { screen: PatientList },   
     // tabnavigation: { screen: TabNavigation },
