@@ -1,19 +1,20 @@
 class Actions{
-    static Login = "Login"
-    static Signup = "Signup"
+    static ListSuccessfull = "LISTSUCCESSFULL"
+ //   static Longitude = "Longitude"
     
-    static LoginAction(login){
+    static NearbyPlace(places){
+        console.log(places)
         return {
-            type:Actions.Login,
-            login
+            type:Actions.ListSuccessfull,
+            payload: places
         }
     }
-    static SignupAction(signup){
-        return {
-            type:Actions.Signup,
-            signup
-        }
-    }
+    // static SignupAction(signup){
+    //     return {
+    //         type:Actions.Signup,
+    //         signup
+    //     }
+    // }
 }
 
 export default Actions;

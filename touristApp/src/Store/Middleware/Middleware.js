@@ -1,20 +1,17 @@
 import * as firebase from 'firebase';
 import Actions from '../Actions/AuthActions';
-import { AsyncStorage } from "react-native";
+// import { AsyncStorage } from "react-native";
+import axios from "axios";
 
 
 class Middleware {
-    static signupUser(docDetails) {
-        console.log(docDetails)
+    static nearBySearch(latitude, longitude) {
+        console.log(latitude, longitude)
         return (dispatch) => {
-            let auth = firebase.auth();
-            auth.createUserWithEmailAndPassword(docDetails.email, docDetails.pass)
-                .then((user) => {
-                    props.navigation.navigate('login')
-                    uid = user.uid;
-                    docDetails._id = uid;
-                    firebase.database().ref(`Users/${uid}`).set(docDetails);
-                    dispatch(Actions.SignupAction())
+            axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=500&key=AIzaSyAp6kHID6XYltx5WE14dKibMJugHozKlas`)
+                .then((response) => {
+                    console.log(response.data.results);
+                    dispatch(Actions.NearbyPlace(response.data.results))
                 })
                 .catch(function (error) {
                     var errorCode = error.code;
@@ -22,26 +19,26 @@ class Middleware {
                 });
         }
     }
-    static loginUser(props, docDetails) {
-        return (dispatch) => {
-            let auth = firebase.auth();
-            auth.signInWithEmailAndPassword(docDetails.email, docDetails.pass)
-                .then(async(user) => {
-                    alert('Successfully Login!')
-                    props.navigation.navigate('MapVeiw')
-                    await AsyncStorage.removeItem('xyz');
-                    let currentUser = { email: docDetails.email, pass: docDetails.pass, _id: user.uid };
-                    await AsyncStorage.setItem('xyz', JSON.stringify(currentUser));
-                })
-                .catch(function (error) {
-                    var errorCode = error.code;
-                    var errorMesssage = error.message;
-                    alert(errorMesssage + "asd")
-                })
-            console.log(docDetails, 'asdasd')
+    // static loginUser(props, docDetails) {
+    //     return (dispatch) => {
+    //         let auth = firebase.auth();
+    //         auth.signInWithEmailAndPassword(docDetails.email, docDetails.pass)
+    //             .then(async(user) => {
+    //                 alert('Successfully Login!')
+    //                 props.navigation.navigate('MapVeiw')
+    //                 await AsyncStorage.removeItem('xyz');
+    //                 let currentUser = { email: docDetails.email, pass: docDetails.pass, _id: user.uid };
+    //                 await AsyncStorage.setItem('xyz', JSON.stringify(currentUser));
+    //             })
+    //             .catch(function (error) {
+    //                 var errorCode = error.code;
+    //                 var errorMesssage = error.message;
+    //                 alert(errorMesssage + "asd")
+    //             })
+    //         console.log(docDetails, 'asdasd')
 
-            dispatch(Actions.LoginAction())
-        }
-    }
+    //         dispatch(Actions.LoginAction())
+    //     }
+    // }
 }
 export default Middleware;
