@@ -3,7 +3,7 @@ import Login from "./Component/Login/Login";
 import Signup from "./Component/Signup/Signup";
 // import HomePage from "./Components/HomePage/homePage";
 import mapView from "./Component/MapView/mapView";
-import placeDetails from "./Component/PlaceDetails/placeDetails";
+import PlaceDetails from "./Component/PlaceDetails/placeDetails";
 // import PatientList from "./Component/PatientList/PatientList";
 // import TabNavigation from "./Component/TabNavigation/TabNavigation";
 // import Profile from './Components/Profile/profile';
@@ -16,7 +16,7 @@ const Naviagte = StackNavigator({
     // tabnavigation: { screen: TabNavigation },
     // tabsnav: { screen: TabsNav },
     MapVeiw: { screen: mapView },
-    PlaceDetails: { screen: placeDetails },
+    PlaceDetails: { screen: PlaceDetails },
     // homePage: { screen: HomePage },
     signup: { screen: Signup },
 })

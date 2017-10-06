@@ -5,10 +5,10 @@ import axios from "axios";
 
 
 class Middleware {
-    static nearBySearch(latitude, longitude) {
+    static nearBySearch (latitude, longitude) {
         console.log(latitude, longitude)
         return (dispatch) => {
-            axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=500&key=AIzaSyAp6kHID6XYltx5WE14dKibMJugHozKlas`)
+             axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=500&key=AIzaSyAp6kHID6XYltx5WE14dKibMJugHozKlas`)
                 .then((response) => {
                     console.log(response.data.results);
                     dispatch(Actions.NearbyPlace(response.data.results))
@@ -19,15 +19,15 @@ class Middleware {
                 });
         }
     }
-    static placesDetails(place_id) {
+    static placesDetails (place_id, callback) {
         console.log(place_id)
         return (dispatch) => {
-            axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=${place_id}
-            `)
+            axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${place_id}&key=AIzaSyAp6kHID6XYltx5WE14dKibMJugHozKlas`)
                 .then((response) => {
                     console.log(response.place_id);
-                    props.navigation.navigate('PlaceDetails')
-                    dispatch(Actions.placesDetails(response.place_id))
+                    callback(response.data.result)
+                    // props.navigation.navigate('PlaceDetails')
+                    dispatch(Actions.placesDetails(response.data.result))
                 })
                 .catch(function (error) {
                     var errorCode = error.code;

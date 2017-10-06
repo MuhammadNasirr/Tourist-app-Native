@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, ListView, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import MapView from "react-native-maps"
-import { Container, Button, Content, Card, CardItem, List, ListItem, Input, Footer } from 'native-base';
+import { Container, Button, Content, Card, CardItem, List, ListItem, Thumbnail, Body, Input, Footer } from 'native-base';
 import { connect } from 'react-redux';
 import Middleware from '../../Store/Middleware/Middleware';
 
@@ -10,7 +10,7 @@ function mapDispatchToProps(dispatch) {
         nearBySearch: (latitude, longitude) => {
             dispatch(Middleware.nearBySearch(latitude, longitude))
         },
-        placeDetails: (placeid) => {
+        placesDetails: (placeid) => {
             dispatch(Middleware.placesDetails(placeid))
         },
     }
@@ -31,6 +31,10 @@ class mapView extends Component {
             region: null,
 
         }
+    }
+    static navigationOptions = {
+        title: "Tourist Guide",
+
     }
 
     componentWillMount() {
@@ -63,7 +67,7 @@ class mapView extends Component {
 
 
     onMapPress(e) {
-        alert("coordinates:" + JSON.stringify(e.nativeEvent.coordinate))
+        // alert("coordinates:" + JSON.stringify(e.nativeEvent.coordinate))
         this.setState({
             marker: [
                 {
@@ -74,7 +78,7 @@ class mapView extends Component {
         });
     }
     _onPressButton = (place_id) => {
-        this.props.placeDetails(place_id);
+        this.props.placesDetails();
         // props.navigation.navigate('PlaceDetails') 
     }
 
@@ -105,27 +109,37 @@ class mapView extends Component {
                     </MapView>
                 </View>
                 <View style={styles.view2}>
-                    {
-                        (this.props.NearbyPlaces) ?
-                            this.props.NearbyPlaces.map((pList, i) => {
-                                console.log(pList.name)
-                                return (
-                                    // <View >
-                                    <TouchableOpacity
-                                        key={i}
-                                        onPress={this._onPressButton(pList.place_id).bind(this)}
-                                    >
-                                        <View style={styles.button}>
-                                            <Text style={styles.buttonText}>{pList.name}</Text>
-                                        </View>
-                                    </TouchableOpacity>
+                    <ScrollView >
+                        {
+                            (this.props.NearbyPlaces) ?
+                                this.props.NearbyPlaces.map((place, i) => {
+                                    console.log(place.name)
+                                    return (
+                                        // <ScrollView horizontal={true}>
+                                        <ListItem onPress={() => { placesDetails(place.place_id, (placesDetails) => navigate('PlaceDetails', placesDetails)) }} key={i} style={{ marginLeft: 10, marginRight: 10 }}>
+                                            <Thumbnail square size={80} source={{ uri: place.icon }} />
+                                            <Body style={{ marginLeft: 10, }}>
+                                                <Text>{place.name}</Text>
+                                            </Body>
+                                        </ListItem>
+                                        // </ScrollView>
+                                        // <View >
+                                        // <TouchableOpacity
+                                        //     key={i}
+                                        //     onPress={this._onPressButton(pList.place_id).bind(this)}
+                                        // >
+                                        //     <View style={styles.button}>
+                                        //         <Text style={styles.buttonText}>{pList.name}</Text>
+                                        //     </View>
+                                        // </TouchableOpacity>
 
 
-                                    // </View>
-                                )
-                            })
-                            : null
-                    }
+                                        // </View>
+                                    )
+                                })
+                                : null
+                        }
+                    </ScrollView>
                 </View>
             </View>
         )
