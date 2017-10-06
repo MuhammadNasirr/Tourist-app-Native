@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, ListView, ScrollView } from 'react-native'
+import { Text, View, ListView, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import MapView from "react-native-maps"
 import { Container, Button, Content, Card, CardItem, List, ListItem, Input, Footer } from 'native-base';
 import { connect } from 'react-redux';
@@ -9,6 +9,9 @@ function mapDispatchToProps(dispatch) {
     return {
         nearBySearch: (latitude, longitude) => {
             dispatch(Middleware.nearBySearch(latitude, longitude))
+        },
+        placeDetails: (placeid) => {
+            dispatch(Middleware.placesDetails(placeid))
         },
     }
 }
@@ -57,10 +60,7 @@ class mapView extends Component {
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
     }
-    // componentWillMount() {
-    //    let getCurrentPosition = navigator.geolocation.getCurrentPosition(this.watchID);
 
-    // }
 
     onMapPress(e) {
         alert("coordinates:" + JSON.stringify(e.nativeEvent.coordinate))
@@ -73,6 +73,10 @@ class mapView extends Component {
             ],
         });
     }
+    _onPressButton = (place_id) => {
+        this.props.placeDetails(place_id);
+        // props.navigation.navigate('PlaceDetails') 
+    }
 
     onRegionChange = (region) => {
 
@@ -81,7 +85,7 @@ class mapView extends Component {
     render() {
         return (
             <View style={styles.container}>
-                {/* <View> */}
+                <View style={styles.view1}>
                     <MapView
                         provider="google"
                         style={styles.map}
@@ -99,25 +103,30 @@ class mapView extends Component {
                         showsTraffic={true}
                         showsIndoors={true}>
                     </MapView>
-                {/* </View> */}
-                 {/* <View> */}
+                </View>
+                <View style={styles.view2}>
                     {
                         (this.props.NearbyPlaces) ?
                             this.props.NearbyPlaces.map((pList, i) => {
                                 console.log(pList.name)
                                 return (
-                                    <View key={i}>
-                                        <ScrollView contentContainerStyle={styles.contentContainer}>
-                                            <Text>
-                                                {pList.name}
-                                            </Text>
-                                        </ScrollView>
-                                    </View>
+                                    // <View >
+                                    <TouchableOpacity
+                                        key={i}
+                                        onPress={this._onPressButton(pList.place_id).bind(this)}
+                                    >
+                                        <View style={styles.button}>
+                                            <Text style={styles.buttonText}>{pList.name}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+
+
+                                    // </View>
                                 )
                             })
                             : null
                     }
-                {/* </View>  */}
+                </View>
             </View>
         )
     }
@@ -129,26 +138,55 @@ const styles =
     {
 
         container: {
-            position: 'absolute',
-            // flexDirection: "column",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            // position: 'absolute',
+            flexDirection: "column",
+            // top: 0,
+            // left: 0,
+            // right: 0,
+            // bottom: 0,
+            ...StyleSheet.absoluteFillObject,
+
+            flex: 1,
             justifyContent: 'flex-end',
-            alignItems: 'center',
+            // alignItems: 'center',
         },
-        contentContainer: {
-            paddingVertical: 2
-        },
+        // contentContainer: {
+        //     paddingVertical: 2
+        // },
         map: {
             flex: 1,
-            position: 'absolute',
-            // height: 200,
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 300,
+            justifyContent: 'flex-end',
+            ...StyleSheet.absoluteFillObject,
+            alignItems: 'center',
+            // position: 'absolute',
+            // height: '50%',
+            // top: 0,
+            // left: 0,
+            // right: 0,
+            // bottom: 300,
+
+        },
+        view2: {
+            flex: 1,
+            marginTop: 200,
+            // ...StyleSheet.absoluteFillObject,
+
+            // position: 'absolute',
+            // alignItems: 'left',
+
+
+        },
+        view1: {
+            height: 200,
+            flex: 2,
+            ...StyleSheet.absoluteFillObject,
+
+        },
+        button: {
+            // marginBottom: 30,
+            width: 260,
+            // alignItems: 'center',
+            backgroundColor: '#2196F3'
         },
         // pin: {
         //     backgroundColor: "#fffa",

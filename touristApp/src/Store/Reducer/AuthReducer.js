@@ -3,6 +3,7 @@ import Actions from "../Actions/AuthActions"
 
 const initial_state = {
     NearbyPlaces: [],
+    PlacesDetails: [],
     // Signup: "false",
     // isRegister: "false",
 }
@@ -13,8 +14,8 @@ function AuthReducer(state = initial_state, action) {
             console.log(action.payload + 'heasd')
             return Object.assign({}, state, { NearbyPlaces: action.payload })
 
-        // case Actions.Signup:
-        //     return Object.assign({}, state, { Signup: "true", isRegister: "true" })
+        case Actions.ListDetails:
+            return Object.assign({}, state, { PlacesDetails: action.payload })
 
         default:
             return state

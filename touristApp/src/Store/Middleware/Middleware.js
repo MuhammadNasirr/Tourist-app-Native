@@ -19,6 +19,22 @@ class Middleware {
                 });
         }
     }
+    static placesDetails(place_id) {
+        console.log(place_id)
+        return (dispatch) => {
+            axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4&key=${place_id}
+            `)
+                .then((response) => {
+                    console.log(response.place_id);
+                    props.navigation.navigate('PlaceDetails')
+                    dispatch(Actions.placesDetails(response.place_id))
+                })
+                .catch(function (error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                });
+        }
+    }
     // static loginUser(props, docDetails) {
     //     return (dispatch) => {
     //         let auth = firebase.auth();
