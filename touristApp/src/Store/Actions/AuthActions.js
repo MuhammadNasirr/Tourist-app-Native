@@ -1,6 +1,7 @@
 class Actions{
     static ListSuccessfull = "LISTSUCCESSFULL"
     static ListDetails = "LISTDETAILS"
+    static GetDirection = "GETDIRECTION"
  //   static Longitude = "Longitude"
     
     static NearbyPlace(places){
@@ -15,6 +16,13 @@ class Actions{
         return {
             type:Actions.ListDetails,
             payload: Details
+        }
+    }
+    static GetDirections(direction){
+        console.log(direction)
+        return {
+            type:Actions.GetDirection,
+            payload: direction
         }
     }
     // static SignupAction(signup){

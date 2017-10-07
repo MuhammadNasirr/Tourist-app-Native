@@ -10,8 +10,8 @@ function mapDispatchToProps(dispatch) {
         nearBySearch: (latitude, longitude) => {
             dispatch(Middleware.nearBySearch(latitude, longitude))
         },
-        placesDetails: (placeid) => {
-            dispatch(Middleware.placesDetails(placeid))
+        placesDetails: (placeid, callback) => {
+            dispatch(Middleware.placesDetails(placeid, callback))
         },
     }
 }
@@ -28,7 +28,12 @@ class mapView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            region: null,
+            region: {
+                latitude: 24.871641,
+                longitude: 67.059906,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+            },
 
         }
     }
@@ -78,48 +83,53 @@ class mapView extends Component {
         });
     }
     _onPressButton = (place_id) => {
-        this.props.placesDetails();
-        // props.navigation.navigate('PlaceDetails') 
+
+        console.log(place_id)
+        console.log(this.props.placesDetails)
+        this.props.placesDetails(place_id);
+
+        this.props.navigation.navigate('PlaceDetails', place_id)
     }
 
     onRegionChange = (region) => {
-
         this.setState({ region: region })
     }
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.view1}>
-                    <MapView
-                        provider="google"
-                        style={styles.map}
-                        showsUserLocation={true}
-                        followsUserLocation={true}
-                        showsCompass={false}
-                        showsPointOfInternet={false}
-                        region={this.state.region}
-                        onRegionChange={this.onRegionChange}
-                        mapType="standard"
-                        onPress={this.onMapPress.bind(this)}
-                        zoomEnabled={true}
-                        pitchEnabled={true}
-                        showsBuildings={true}
-                        showsTraffic={true}
-                        showsIndoors={true}>
-                    </MapView>
-                </View>
-                <View style={styles.view2}>
-                    <ScrollView >
+                <ScrollView >
+                    <View style={styles.view1}>
+                        <MapView
+                            provider="google"
+                            style={styles.map}
+                            showsUserLocation={true}
+                            followsUserLocation={true}
+                            showsCompass={false}
+                            showsPointOfInternet={false}
+                            region={this.state.region}
+                            onRegionChange={this.onRegionChange}
+                            mapType="standard"
+                            onPress={this.onMapPress.bind(this)}
+                            zoomEnabled={true}
+                            pitchEnabled={true}
+                            showsBuildings={true}
+                            showsTraffic={true}
+                            showsIndoors={true}>
+                        </MapView>
+                    </View>
+                    <View style={styles.view2}>
+
                         {
                             (this.props.NearbyPlaces) ?
                                 this.props.NearbyPlaces.map((place, i) => {
                                     console.log(place.name)
                                     return (
                                         // <ScrollView horizontal={true}>
-                                        <ListItem onPress={() => { placesDetails(place.place_id, (placesDetails) => navigate('PlaceDetails', placesDetails)) }} key={i} style={{ marginLeft: 10, marginRight: 10 }}>
+                                        <ListItem onPress={() => { this._onPressButton(place) }} key={i} style={{ marginLeft: 10, marginRight: 10 }}>
                                             <Thumbnail square size={80} source={{ uri: place.icon }} />
                                             <Body style={{ marginLeft: 10, }}>
                                                 <Text>{place.name}</Text>
+                                                {/* {console.log(placesDetails+"asdasdasd")} */}
                                             </Body>
                                         </ListItem>
                                         // </ScrollView>
@@ -139,8 +149,8 @@ class mapView extends Component {
                                 })
                                 : null
                         }
-                    </ScrollView>
-                </View>
+                    </View>
+                </ScrollView>
             </View>
         )
     }
@@ -169,6 +179,7 @@ const styles =
         // },
         map: {
             flex: 1,
+            height:450,
             justifyContent: 'flex-end',
             ...StyleSheet.absoluteFillObject,
             alignItems: 'center',
@@ -181,8 +192,8 @@ const styles =
 
         },
         view2: {
-            flex: 1,
-            marginTop: 200,
+            flex: 2,
+            marginTop: 450,
             // ...StyleSheet.absoluteFillObject,
 
             // position: 'absolute',

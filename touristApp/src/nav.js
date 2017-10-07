@@ -4,6 +4,7 @@ import Signup from "./Component/Signup/Signup";
 // import HomePage from "./Components/HomePage/homePage";
 import mapView from "./Component/MapView/mapView";
 import PlaceDetails from "./Component/PlaceDetails/placeDetails";
+import Polyline from "./Component/Polyline/polyline";
 // import PatientList from "./Component/PatientList/PatientList";
 // import TabNavigation from "./Component/TabNavigation/TabNavigation";
 // import Profile from './Components/Profile/profile';
@@ -17,7 +18,7 @@ const Naviagte = StackNavigator({
     // tabsnav: { screen: TabsNav },
     MapVeiw: { screen: mapView },
     PlaceDetails: { screen: PlaceDetails },
-    // homePage: { screen: HomePage },
+    Polyline: { screen: Polyline },
     signup: { screen: Signup },
 })
 
